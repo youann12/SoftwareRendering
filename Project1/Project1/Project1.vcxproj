@@ -82,9 +82,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\otherApps\OpenCv\OpenCv\opencv\build\include;D:\SoftwareRendering\libs_include\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\otherApps\OpenCv\OpenCv\opencv\build\x64\vc15\lib;D:\otherApps\OpenCv\OpenCv\opencv\build\x64\vc14\lib;D:\SoftwareRendering\libs_include\libs;$(LibraryPath)</LibraryPath>
-    <PublicIncludeDirectories>D:\SoftwareRendering\libs_include;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <IncludePath>E:\OpenCV\opencv\build\include;H:\SoftRender\SoftwareRendering\libs_include\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\OpenCV\opencv\build\x64\vc15\lib;E:\OpenCV\opencv\build\x64\vc14\lib;H:\SoftRender\SoftwareRendering\libs_include\libs;$(LibraryPath)</LibraryPath>
+    <PublicIncludeDirectories>H:\SoftRender\SoftwareRendering\libs_include;$(PublicIncludeDirectories)</PublicIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -128,7 +128,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;opencv_world454d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;opencv_world453d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,9 +151,11 @@
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="mian.cpp" />
+    <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameBuffer.h" />
+    <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #include "FrameBuffer.h"
 #include <opencv2/opencv.hpp>
+#include "sourceData.h"
 
 using namespace std;
 using namespace cv;
