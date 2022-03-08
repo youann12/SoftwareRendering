@@ -1,5 +1,5 @@
 #include "FrameBuffer.h"
-
+#include <iostream>
 
 FrameBuffer::FrameBuffer( int w = 800,  int h = 800)
 {
@@ -26,16 +26,27 @@ void FrameBuffer::clearColor(glm::vec3 color)
 	std::fill(framebuffer.begin(), framebuffer.end(), color);
 }
 
-void FrameBuffer::loadData(float* data, int *ind)
+void FrameBuffer::loadData(float data[], int ind[], int numVertices, int numTriangles)
 {
-	const int numVertices = sizeof(data);
-	vertexData vertices[numVertices];
-	for (int i = 0; i < sizeof(data); i += 6)
+
+	std::vector<vertexData> vertices;
+	
+	for (int i = 0; i < numVertices; i += 6)
 	{
 		vertexData v;
+		std::cout << data[i] << data[i + 1] << data[i + 2] << std::endl;
 		v.location	= glm::vec4{data[i], data[i + 1], data[i + 2], 1.0f};
 		v.color		= glm::vec3{ data[i + 3], data[i + 4], data[i + 5]};
-		vertices[i / 6] = v;
+		vertices.push_back(v);
+	}
+
+	
+	for (int i = 0; i <= numTriangles; i += 3)
+	{
+		glm::vec4 tVertices[3]	= { vertices[i].location, vertices[i + 1].location, vertices[i + 2].location };
+		glm::vec3 tColors[3]	= { vertices[i].color, vertices[i + 1].color, vertices[i + 2].color };
+		Triangle t = Triangle(tVertices, tColors);
+		this->Thistriangles.push_back(t);
 	}
 }
 

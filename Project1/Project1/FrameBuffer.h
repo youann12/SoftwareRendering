@@ -15,7 +15,7 @@ class FrameBuffer
 public:
 	int width;
 	int height;
-
+	std::vector<Triangle> Thistriangles;
 
 	std::vector<glm::vec3> framebuffer;
 
@@ -25,6 +25,6 @@ public:
 	void setPoint(int x, int y, glm::vec3 color);
 	void setLine(glm::vec2 start, glm::vec2 end, glm::vec3 color);
 	void clearColor(glm::vec3 color);
-	void loadData(float *data, int *ind);
+	void loadData(float data[], int ind[], int numVertices, int numTriangles);
 	void loadData(vertexData* data);
 };

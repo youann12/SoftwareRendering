@@ -5,9 +5,10 @@
 
 class Triangle
 {
-	Triangle(glm::vec4* vertex, glm::vec3* color, glm::vec3 *normal, glm::vec2 *texcoord);
-	~Triangle() = default;
 public:
+	Triangle(glm::vec4* vertex, glm::vec3* color, glm::vec3 *normal, glm::vec2 *texcoord);
+	Triangle(glm::vec4* vertex, glm::vec3* color);
+	~Triangle() = default;
 	glm::vec4 vertices[3];
 	glm::vec3 color[3];
 	glm::vec3 normal[3];

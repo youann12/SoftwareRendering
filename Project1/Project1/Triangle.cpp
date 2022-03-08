@@ -11,6 +11,15 @@ Triangle::Triangle(glm::vec4* vertex, glm::vec3* color, glm::vec3* normal, glm::
 	}
 }
 
+Triangle::Triangle(glm::vec4* vertex, glm::vec3* color)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		this->setVertex(i, vertex[i]);
+		this->setColor(i, color[i]);
+	}
+}
+
 void Triangle::setVertex(int i, glm::vec4 vertex)
 {
 	this->vertices[i] = vertex;
