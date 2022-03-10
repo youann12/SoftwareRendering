@@ -6,7 +6,7 @@ FrameBuffer::FrameBuffer( int w = 800,  int h = 800)
 	this->width = w;
 	this->height = h;
 	this->framebuffer.resize((double)this->width * (double)this->height);
-	this->clearColor(glm::vec3{ 0.0f, 1.0f, 0.0f });
+	this->clearColor(glm::vec3{ 0.0f, 0.0f, 0.0f });
 }
 
 void FrameBuffer::setPoint(int x, int y, glm::vec3 color)
@@ -28,9 +28,8 @@ void FrameBuffer::clearColor(glm::vec3 color)
 
 void FrameBuffer::loadData(float data[], int ind[], int numVertices, int numTriangles)
 {
-
 	std::vector<vertexData> vertices;
-	
+	// load vertex data, include vertices attributes
 	for (int i = 0; i < numVertices; i += 6)
 	{
 		vertexData v;
@@ -40,7 +39,7 @@ void FrameBuffer::loadData(float data[], int ind[], int numVertices, int numTria
 		vertices.push_back(v);
 	}
 
-	
+	// according to index array and vertices array to construct triangle
 	for (int i = 0; i <= numTriangles; i += 3)
 	{
 		glm::vec4 tVertices[3]	= { vertices[i].location, vertices[i + 1].location, vertices[i + 2].location };
@@ -52,4 +51,24 @@ void FrameBuffer::loadData(float data[], int ind[], int numVertices, int numTria
 
 void FrameBuffer::loadData(vertexData* data)
 {
+}
+
+void FrameBuffer::draw(int mode)
+{
+	this->clearColor(glm::vec3{ 0.0f, 0.0f, 0.0f });
+	cv::Mat image(800, 800, CV_32FC3, this->frame_buffer().data());
+	if (mode == 0)
+	{
+		std::vector<Triangle>::iterator t;
+		for (t = Thistriangles.begin(); t != Thistriangles.end(); t++)
+		{
+			cv::Point p1(t->a().x, t->a().y);
+			cv::Point p2(t->b().x, t->b().y);
+			cv::Point p3(t->c().x, t->c().y);
+			cv::line(image, p1, p2, cv::Scalar(255, 255, 255), 1, 4);
+			cv::line(image, p2, p3, cv::Scalar(255, 255, 255), 1, 4);
+			cv::line(image, p3, p1, cv::Scalar(255, 255, 255), 1, 4);
+		}
+	}
+	imshow("soft render", image);
 }

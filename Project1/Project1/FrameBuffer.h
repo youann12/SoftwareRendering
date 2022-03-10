@@ -1,3 +1,4 @@
+#include <opencv2/opencv.hpp>
 #include "Triangle.h"
 #include <vector>
 
@@ -16,6 +17,7 @@ public:
 	int width;
 	int height;
 	std::vector<Triangle> Thistriangles;
+	
 
 	std::vector<glm::vec3> framebuffer;
 
@@ -27,4 +29,5 @@ public:
 	void clearColor(glm::vec3 color);
 	void loadData(float data[], int ind[], int numVertices, int numTriangles);
 	void loadData(vertexData* data);
+	void draw(int mode);
 };
