@@ -18,10 +18,10 @@ public:
 	int height;
 	std::vector<Triangle> Thistriangles;
 	
-
 	std::vector<glm::vec3> framebuffer;
 
 	FrameBuffer( int w ,  int h );
+	FrameBuffer();
 	~FrameBuffer() = default;
 	std::vector<glm::vec3>& frame_buffer() { return framebuffer; }
 	void setPoint(int x, int y, glm::vec3 color);

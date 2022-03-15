@@ -18,7 +18,6 @@ public:
 	glm::vec4 b() const { return vertices[1]; };
 	glm::vec4 c() const { return vertices[2]; };
 
-private:
 	void setVertex	 (int i, glm::vec4 vertex);
 	void setColor	 (int i, glm::vec3 color);
 	void setNormal	 (int i, glm::vec3 normal);
