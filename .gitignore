@@ -1,2 +1,6 @@
 .vs/
 AppData/Local/Microsoft
+Project1/Project1/Project1.vcxproj
+*.vcxproj
+Project1/Project1/Project1.vcxproj.filters
+*.tlog

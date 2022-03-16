@@ -1,6 +1,6 @@
 //#include "FrameBuffer.h"
 #include "sourceData.h"
-#include "Shader.h"
+#include "FrameBuffer.h"
 
 using namespace std;
 using namespace cv;
@@ -11,19 +11,16 @@ int draw_mode = 0; // mode = 0 represent wireframe mode, and 1 represent full re
 int main()
 {
     int key = 0;
-    FrameBuffer f = FrameBuffer::FrameBuffer(800,800);
-    Shader shader = Shader(&f);
+    Shader shader = Shader();
+    FrameBuffer f = FrameBuffer::FrameBuffer(800, 800, &shader);
+
     
     f.loadData(vertices, index, 3 * 6, 1);
-    shader.vertexTransform();
     while (key != 27)
     {
         float t_front = (double)getTickCount();
         
         f.draw(draw_mode);
-        //cv::Mat image(800, 800, CV_32FC3, f.frame_buffer().data());
-        //line(image, p1, p2, Scalar(0, 0, 255), 1);
-        //imshow("soft render", image);
         
         key = waitKey(1);
         float t_now = ((double)getTickCount() - t_front) / getTickFrequency();

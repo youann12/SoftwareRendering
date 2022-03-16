@@ -1,18 +1,10 @@
 #include "FrameBuffer.h"
 #include <iostream>
 
-FrameBuffer::FrameBuffer( int w = 800,  int h = 800)
-{
-	this->width = w;
-	this->height = h;
-	this->framebuffer.resize((double)this->width * (double)this->height);
-	this->clearColor(glm::vec3{ 0.0f, 0.0f, 0.0f });
-}
 
 FrameBuffer::FrameBuffer()
 {
 }
-
 
 void FrameBuffer::setPoint(int x, int y, glm::vec3 color)
 {
@@ -67,9 +59,9 @@ void FrameBuffer::draw(int mode)
 		std::vector<Triangle>::iterator t;
 		for (t = Thistriangles.begin(); t != Thistriangles.end(); t++)
 		{
-			cv::Point p1(t->a().x, t->a().y);
-			cv::Point p2(t->b().x, t->b().y);
-			cv::Point p3(t->c().x, t->c().y);
+			cv::Point p1(shader->vertexShader(t->a()).x, shader->vertexShader(t->a()).y);
+			cv::Point p2(shader->vertexShader(t->b()).x, shader->vertexShader(t->b()).y);
+			cv::Point p3(shader->vertexShader(t->c()).x, shader->vertexShader(t->c()).y);
 			cv::line(image, p1, p2, cv::Scalar(255, 255, 255), 1, 4);
 			cv::line(image, p2, p3, cv::Scalar(255, 255, 255), 1, 4);
 			cv::line(image, p3, p1, cv::Scalar(255, 255, 255), 1, 4);

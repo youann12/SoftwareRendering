@@ -1,6 +1,7 @@
 #include <opencv2/opencv.hpp>
 #include "Triangle.h"
 #include <vector>
+#include "Shader.h"
 
 struct vertexData
 {
@@ -19,8 +20,15 @@ public:
 	std::vector<Triangle> Thistriangles;
 	
 	std::vector<glm::vec3> framebuffer;
+	
 
-	FrameBuffer( int w ,  int h );
+	FrameBuffer(int w, int h, Shader* s) :shader(s) {
+		width = w;
+		height = h;
+		framebuffer.resize((double)this->width * (double)this->height);
+		clearColor(glm::vec3{ 0.0f, 0.0f, 0.0f });
+		shader = s;
+	};
 	FrameBuffer();
 	~FrameBuffer() = default;
 	std::vector<glm::vec3>& frame_buffer() { return framebuffer; }
@@ -30,4 +38,6 @@ public:
 	void loadData(float data[], int ind[], int numVertices, int numTriangles);
 	void loadData(vertexData* data);
 	void draw(int mode);
+private:
+	Shader *shader;
 };

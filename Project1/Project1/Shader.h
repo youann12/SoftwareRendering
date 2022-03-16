@@ -1,20 +1,19 @@
 #pragma once
-#include "FrameBuffer.h"
+#include "Triangle.h"
 
 class Shader
 {
 public:
-	Shader(FrameBuffer* f): Frame(f){ }
+	Shader(){ }
 	~Shader() = default;
 	void setModel(glm::mat4 m);
 	void setView(glm::mat4 v);
 	void setProjection(glm::mat4 p);
-	void vertexTransform();
+	glm::vec4 vertexShader(vertex v);
 	
 
 
 private:
-	FrameBuffer* Frame;
 	glm::mat4 model;
 	glm::mat4 view;
 	glm::mat4 projection;
