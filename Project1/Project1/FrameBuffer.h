@@ -40,4 +40,8 @@ public:
 	void draw(int mode);
 private:
 	Shader *shader;
+	void drawTriangle(Vout v1, Vout v2, Vout v3);
+	void drawUpTriangle(Vout v1, Vout v2, Vout v3);
+	void drawDownTriangle(Vout v1, Vout v2, Vout v3);
+	void scanLine(Vout v1, Vout v2);
 };

@@ -14,7 +14,7 @@ int main()
     Shader shader = Shader();
     FrameBuffer f = FrameBuffer::FrameBuffer(800, 800, &shader);
 
-    
+    shader.setView(0, 0, 800, 800);
     f.loadData(vertices, index, 3 * 6, 1);
     while (key != 27)
     {

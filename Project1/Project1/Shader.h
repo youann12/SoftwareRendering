@@ -1,5 +1,6 @@
 #pragma once
 #include "Triangle.h"
+#include "Vout.h"
 
 class Shader
 {
@@ -7,10 +8,10 @@ public:
 	Shader(){ }
 	~Shader() = default;
 	void setModel(glm::mat4 m);
-	void setView(glm::mat4 v);
+	void setView(int x, int y, int width, int height);
 	void setProjection(glm::mat4 p);
-	glm::vec4 vertexShader(vertex v);
-	
+	Vout vertexShader(vertex v);
+	glm::vec3 FragmentShader(vertex v);
 
 
 private:

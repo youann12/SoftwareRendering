@@ -59,13 +59,36 @@ void FrameBuffer::draw(int mode)
 		std::vector<Triangle>::iterator t;
 		for (t = Thistriangles.begin(); t != Thistriangles.end(); t++)
 		{
-			cv::Point p1(shader->vertexShader(t->a()).x, shader->vertexShader(t->a()).y);
-			cv::Point p2(shader->vertexShader(t->b()).x, shader->vertexShader(t->b()).y);
-			cv::Point p3(shader->vertexShader(t->c()).x, shader->vertexShader(t->c()).y);
-			cv::line(image, p1, p2, cv::Scalar(255, 255, 255), 1, 4);
-			cv::line(image, p2, p3, cv::Scalar(255, 255, 255), 1, 4);
-			cv::line(image, p3, p1, cv::Scalar(255, 255, 255), 1, 4);
+			cv::Point p1(shader->vertexShader(t->a()).windowPos.x, shader->vertexShader(t->a()).windowPos.y);
+			cv::Point p2(shader->vertexShader(t->b()).windowPos.x, shader->vertexShader(t->b()).windowPos.y);
+			cv::Point p3(shader->vertexShader(t->c()).windowPos.x, shader->vertexShader(t->c()).windowPos.y);
+			cv::line(image, p1, p2, cv::Scalar(255, 255, 255), 1, 1);
+			cv::line(image, p2, p3, cv::Scalar(255, 255, 255), 1, 1);
+			cv::line(image, p3, p1, cv::Scalar(255, 255, 255), 1, 1);
 		}
 	}
+	else if (mode == 1)
+	{
+
+	}
 	imshow("soft render", image);
+}
+
+void FrameBuffer::drawTriangle(Vout v1, Vout v2, Vout v3)
+{
+	Vout tem[3] = {v1, v2, v3};
+
+
+}
+
+void FrameBuffer::drawUpTriangle(Vout v1, Vout v2, Vout v3)
+{
+}
+
+void FrameBuffer::drawDownTriangle(Vout v1, Vout v2, Vout v3)
+{
+}
+
+void FrameBuffer::scanLine(Vout v1, Vout v2)
+{
 }
