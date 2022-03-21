@@ -11,7 +11,7 @@ public:
 	void setView(int x, int y, int width, int height);
 	void setProjection(glm::mat4 p);
 	Vout vertexShader(vertex v);
-	glm::vec3 FragmentShader(vertex v);
+	glm::vec3 FragmentShader(Vout v);
 
 
 private:

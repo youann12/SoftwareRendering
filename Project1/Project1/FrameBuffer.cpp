@@ -32,7 +32,7 @@ void FrameBuffer::loadData(float data[], int ind[], int numVertices, int numTria
 		vertexData v;
 		std::cout << data[i] << data[i + 1] << data[i + 2] << std::endl;
 		v.location	= glm::vec4{data[i], data[i + 1], data[i + 2], 1.0f};
-		v.color		= glm::vec3{ data[i + 3], data[i + 4], data[i + 5]};
+		v.color		= glm::vec3{data[i + 3], data[i + 4], data[i + 5]};
 		vertices.push_back(v);
 	}
 
@@ -69,26 +69,97 @@ void FrameBuffer::draw(int mode)
 	}
 	else if (mode == 1)
 	{
-
+		std::vector<Triangle>::iterator t;
+		for (t = Thistriangles.begin(); t != Thistriangles.end(); t++)
+		{
+			Vout v1 = shader->vertexShader(t->a());
+			Vout v2 = shader->vertexShader(t->b());
+			Vout v3 = shader->vertexShader(t->c());
+			drawTriangle(v1, v2, v3);
+		}
 	}
 	imshow("soft render", image);
 }
 
-void FrameBuffer::drawTriangle(Vout v1, Vout v2, Vout v3)
+void FrameBuffer::drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 {
-	Vout tem[3] = {v1, v2, v3};
+	Vout tem[3] = {v1, v2, v3}; // 按照从上到下的顺序排序v1, v2, v3
+	Vout temp;
+	if (tem[0].windowPos.y > tem[1].windowPos.y)
+	{
+		temp = tem[0];
+		tem[0] = tem[1];
+		tem[1] = temp;
+	}
+	if (tem[1].windowPos.y > tem[2].windowPos.y)
+	{
+		temp = tem[1];
+		tem[1] = tem[2];
+		tem[2] = temp;
+	}
+	if (tem[0].windowPos.y > tem[1].windowPos.y)
+	{
+		temp = tem[0];
+		tem[0] = tem[1];
+		tem[1] = temp;
+	}
 
+	if (tem[0].windowPos.y == tem[1].windowPos.y)
+		drawDownTriangle(tem[0], tem[1], tem[2]);
+	else if (tem[1].windowPos.y == tem[2].windowPos.y)
+		drawUpTriangle(tem[0], tem[1], tem[2]);
+	else
+	{
+		float w = (tem[1].windowPos.y - tem[0].windowPos.y) / (tem[2].windowPos.y - tem[1].windowPos.y);
+		Vout vmid = Vout::lerp(tem[0], tem[2], w);
+		drawUpTriangle(tem[0], tem[1], vmid);
+		drawDownTriangle(tem[1], vmid, tem[2]);
+	}
 
 }
 
-void FrameBuffer::drawUpTriangle(Vout v1, Vout v2, Vout v3)
+void FrameBuffer::drawUpTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 {
+	Vout top, left, right, temLeft, temRight;
+	top = v1;
+	left = v2.windowPos.x < v3.windowPos.x ? v2:v3;
+	right = v2.windowPos.x > v3.windowPos.x ? v2:v3;
+
+	for (int i = top.windowPos.y; i <= left.windowPos.y; i++)
+	{
+		float w = (i - top.windowPos.y) / (left.windowPos.y - top.windowPos.y);
+		temLeft = Vout::lerp(top, left, w);
+		temRight = Vout::lerp(top, right, w);
+		temLeft.windowPos.y = i;
+		temRight.windowPos.y = i;
+		scanLine(temLeft, temRight);
+	}
 }
 
-void FrameBuffer::drawDownTriangle(Vout v1, Vout v2, Vout v3)
+void FrameBuffer::drawDownTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 {
+	Vout down, left, right, temLeft, temRight;
+	down = v3;
+	left = v2.windowPos.x < v1.windowPos.x ? v2 : v1;
+	right = v2.windowPos.x > v1.windowPos.x ? v2 : v1;
+
+	for (int i = down.windowPos.y; i >= left.windowPos.y; i--)
+	{
+		float w = (i - down.windowPos.y) / (left.windowPos.y - down.windowPos.y);
+		temLeft = Vout::lerp(down, left, w);
+		temRight = Vout::lerp(down, right, w);
+		temLeft.windowPos.y = i;
+		temRight.windowPos.y = i;
+		scanLine(temLeft, temRight);
+	}
 }
 
-void FrameBuffer::scanLine(Vout v1, Vout v2)
+void FrameBuffer::scanLine(const Vout &v1, const Vout &v2)
 {
+	float total = v2.windowPos.x - v1.windowPos.x;
+	for (int i = v1.windowPos.x; i <= v2.windowPos.x; i++)
+	{
+		Vout v = Vout::lerp(v1, v2, (i - v1.windowPos.x) / total);
+		setPoint(i, v1.windowPos.y, shader->FragmentShader(v));
+	}
 }

@@ -29,8 +29,8 @@ Vout Shader::vertexShader(vertex v)
 						0,0,0.5,0,
 						0,0,0,1 }; //projection * view * model;
 	vout.color = v.color;
-	vout.normal = v.normal;
-	vout.Texcoord = v.Texcoord;
+	//vout.normal = v.normal;
+	//vout.Texcoord = v.Texcoord;
 	vout.position = v.position;
 	vout.windowPos = view * v.position;
 
@@ -49,7 +49,7 @@ Vout Shader::vertexShader(vertex v)
 	//}
 }
 
-glm::vec3 Shader::FragmentShader(vertex v)
+glm::vec3 Shader::FragmentShader(Vout v)
 {
 	glm::vec3 color = v.color;
 	return color;

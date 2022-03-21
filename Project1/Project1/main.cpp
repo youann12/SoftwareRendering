@@ -6,7 +6,7 @@ using namespace std;
 using namespace cv;
 int frame_count = 0;
 
-int draw_mode = 0; // mode = 0 represent wireframe mode, and 1 represent full rendering
+int draw_mode = 1; // mode = 0 represent wireframe mode, and 1 represent full rendering
 
 int main()
 {

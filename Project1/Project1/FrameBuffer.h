@@ -15,13 +15,6 @@ struct vertexData
 class FrameBuffer
 {
 public:
-	int width;
-	int height;
-	std::vector<Triangle> Thistriangles;
-	
-	std::vector<glm::vec3> framebuffer;
-	
-
 	FrameBuffer(int w, int h, Shader* s) :shader(s) {
 		width = w;
 		height = h;
@@ -39,9 +32,14 @@ public:
 	void loadData(vertexData* data);
 	void draw(int mode);
 private:
+	int width;
+	int height;
+	std::vector<Triangle> Thistriangles;
+
+	std::vector<glm::vec3> framebuffer;
 	Shader *shader;
-	void drawTriangle(Vout v1, Vout v2, Vout v3);
-	void drawUpTriangle(Vout v1, Vout v2, Vout v3);
-	void drawDownTriangle(Vout v1, Vout v2, Vout v3);
-	void scanLine(Vout v1, Vout v2);
+	void drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3);
+	void drawUpTriangle(const Vout &v1, const Vout &v2, const Vout &v3);
+	void drawDownTriangle(const Vout &v1, const Vout &v2, const Vout &v3);
+	void scanLine(const Vout &v1, const Vout &v2);
 };
