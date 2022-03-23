@@ -1,7 +1,6 @@
 #pragma once
 #include "Triangle.h"
 #include <vector>
-
 struct vertexData
 {
 	glm::vec4 location;
@@ -9,6 +8,7 @@ struct vertexData
 	//glm::vec3 normal;
 	//glm::vec3 texcoord;
 };
+
 
 class Mesh
 {

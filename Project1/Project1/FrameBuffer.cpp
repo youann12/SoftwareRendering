@@ -14,9 +14,6 @@ void FrameBuffer::setPoint(int x, int y, glm::vec3 color)
 	this->framebuffer[ind] = color;
 }
 
-void FrameBuffer::setLine(glm::vec2 start, glm::vec2 end, glm::vec3 color)
-{
-}
 
 void FrameBuffer::clearColor(glm::vec3 color)
 {
@@ -30,7 +27,6 @@ void FrameBuffer::loadData(float data[], int ind[], int numVertices, int numTria
 	for (int i = 0; i < numVertices; i += 6)
 	{
 		vertexData v;
-		std::cout << data[i] << data[i + 1] << data[i + 2] << std::endl;
 		v.location	= glm::vec4{data[i], data[i + 1], data[i + 2], 1.0f};
 		v.color		= glm::vec3{data[i + 3], data[i + 4], data[i + 5]};
 		vertices.push_back(v);
@@ -46,9 +42,16 @@ void FrameBuffer::loadData(float data[], int ind[], int numVertices, int numTria
 	}
 }
 
-void FrameBuffer::loadData(vertexData* data)
-{
-}
+
+//void FrameBuffer::loadMesh(Mesh m, glm::vec3 position)
+//{
+//	ThisMeshes[m] = position;
+//}
+//
+//void FrameBuffer::delMesh(Mesh m)
+//{
+//	ThisMeshes.erase(m);
+//}
 
 void FrameBuffer::draw(int mode)
 {

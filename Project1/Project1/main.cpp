@@ -26,6 +26,15 @@ int main()
         float t_now = ((double)getTickCount() - t_front) / getTickFrequency();
         float fps = 1.0 / t_now;
         std::cout << "Fps: " << fps << '\n';
+        if (key == 102)
+        {
+            draw_mode = 1;
+        }
+        else if (key == 114)
+        {
+            draw_mode = 0;
+        }
+        std::cout << "press " << key << std::endl;
     }
     return 0;
 }  

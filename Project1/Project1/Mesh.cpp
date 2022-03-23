@@ -1,4 +1,4 @@
-#include "mesh.h"
+#include "Mesh.h"
 
 void Mesh::loadData(float data[], int ind[], int numVertices, int numTriangles)
 {

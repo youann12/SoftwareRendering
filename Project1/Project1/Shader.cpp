@@ -35,18 +35,6 @@ Vout Shader::vertexShader(vertex v)
 	vout.windowPos = view * v.position;
 
 	return vout;
-	//Frame->framebuffer;
-	//std::vector<Triangle>::iterator t;
-	//for (t = Frame->Thistriangles.begin(); t != Frame->Thistriangles.end(); t++)
-	//{
-	//	glm::vec4 v[3];
-	//	v[0] = mvp * t->vertices[0].position;
-	//	v[1] = mvp * t->vertices[1].position;
-	//	v[2] = mvp * t->vertices[2].position;
-	//	t->setPos(0, v[0]);
-	//	t->setPos(1, v[1]);
-	//	t->setPos(2, v[2]);
-	//}
 }
 
 glm::vec3 Shader::FragmentShader(Vout v)
