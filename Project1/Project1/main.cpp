@@ -1,6 +1,6 @@
 //#include "FrameBuffer.h"
 #include "sourceData.h"
-#include "FrameBuffer.h"
+#include "Scene.h"
 
 using namespace std;
 using namespace cv;
@@ -13,28 +13,34 @@ int main()
     int key = 0;
     Shader shader = Shader();
     FrameBuffer f = FrameBuffer::FrameBuffer(800, 800, &shader);
+    Mesh m;
 
+    Scene scene;
+    scene.bindFramebuffer(&f);
+
+    m.loadData(vertices, index, 3 * 6, 1);
+    
+    scene.loadMesh(m, glm::vec3{0, 0, 0});
+    
     shader.setView(0, 0, 800, 800);
-    f.loadData(vertices, index, 3 * 6, 1);
     while (key != 27)
     {
         float t_front = (double)getTickCount();
         
-        f.draw(draw_mode);
+        scene.draw(draw_mode);
         
         key = waitKey(1);
         float t_now = ((double)getTickCount() - t_front) / getTickFrequency();
         float fps = 1.0 / t_now;
         std::cout << "Fps: " << fps << '\n';
-        if (key == 102)
+        if (key == 114)
         {
             draw_mode = 1;
         }
-        else if (key == 114)
+        else if (key == 102)
         {
             draw_mode = 0;
         }
-        std::cout << "press " << key << std::endl;
     }
     return 0;
 }  

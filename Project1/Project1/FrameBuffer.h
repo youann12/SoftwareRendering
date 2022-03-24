@@ -2,16 +2,16 @@
 #include "Triangle.h"
 #include <vector>
 #include "Shader.h"
-//#include "Mesh.h"
+#include "Mesh.h"
 #include <map>
 
-struct vertexData
-{
-	glm::vec4 location;
-	glm::vec3 color;
-	//glm::vec3 normal;
-	//glm::vec3 texcoord;
-};
+//struct vertexData
+//{
+//	glm::vec4 location;
+//	glm::vec3 color;
+//	//glm::vec3 normal;
+//	//glm::vec3 texcoord;
+//};
 
 
 
@@ -25,22 +25,20 @@ public:
 		clearColor(glm::vec3{ 0.0f, 0.0f, 0.0f });
 		shader = s;
 	};
-	FrameBuffer();
+	FrameBuffer() = default;
 	~FrameBuffer() = default;
 	std::vector<glm::vec3>& frame_buffer() { return framebuffer; }
 	void setPoint(int x, int y, glm::vec3 color);
 	void clearColor(glm::vec3 color);
-	void loadData(float data[], int ind[], int numVertices, int numTriangles);
-	//void loadMesh(Mesh m, glm::vec3 position);
-	//void delMesh(Mesh m);
-	void draw(int mode);
+	void loadMesh(Mesh m, glm::vec3 position);
+	void delMesh(Mesh m);
+	void draw(int mode, Mesh m);
 
 private:
 	int width;
 	int height;
 
-	std::vector<Triangle> Thistriangles;
-	//std::map<Mesh, glm::vec3> ThisMeshes;
+	std::map<Mesh, glm::vec3> ThisMeshes;
 
 	std::vector<glm::vec3> framebuffer;
 	Shader *shader;

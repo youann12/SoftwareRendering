@@ -2,9 +2,6 @@
 #include <iostream>
 
 
-FrameBuffer::FrameBuffer()
-{
-}
 
 void FrameBuffer::setPoint(int x, int y, glm::vec3 color)
 {
@@ -20,47 +17,26 @@ void FrameBuffer::clearColor(glm::vec3 color)
 	std::fill(framebuffer.begin(), framebuffer.end(), color);
 }
 
-void FrameBuffer::loadData(float data[], int ind[], int numVertices, int numTriangles)
-{
-	std::vector<vertexData> vertices;
-	// load vertex data, include vertices attributes
-	for (int i = 0; i < numVertices; i += 6)
-	{
-		vertexData v;
-		v.location	= glm::vec4{data[i], data[i + 1], data[i + 2], 1.0f};
-		v.color		= glm::vec3{data[i + 3], data[i + 4], data[i + 5]};
-		vertices.push_back(v);
-	}
 
-	// according to index array and vertices array to construct triangle
-	for (int i = 0; i <= numTriangles; i += 3)
-	{
-		glm::vec4 tVertices[3]	= { vertices[i].location, vertices[i + 1].location, vertices[i + 2].location };
-		glm::vec3 tColors[3]	= { vertices[i].color, vertices[i + 1].color, vertices[i + 2].color };
-		Triangle t = Triangle(tVertices, tColors);
-		this->Thistriangles.push_back(t);
-	}
+
+void FrameBuffer::loadMesh(Mesh m, glm::vec3 position)
+{
+	ThisMeshes.insert(std::pair<Mesh, glm::vec3> (m, position));
 }
 
+void FrameBuffer::delMesh(Mesh m)
+{
+	ThisMeshes.erase(m);
+}
 
-//void FrameBuffer::loadMesh(Mesh m, glm::vec3 position)
-//{
-//	ThisMeshes[m] = position;
-//}
-//
-//void FrameBuffer::delMesh(Mesh m)
-//{
-//	ThisMeshes.erase(m);
-//}
-
-void FrameBuffer::draw(int mode)
+void FrameBuffer::draw(int mode, Mesh m)
 {
 	this->clearColor(glm::vec3{ 0.0f, 0.0f, 0.0f });
 	cv::Mat image(800, 800, CV_32FC3, this->frame_buffer().data());
+	std::vector<Triangle>::iterator t;
 	if (mode == 0)
 	{
-		std::vector<Triangle>::iterator t;
-		for (t = Thistriangles.begin(); t != Thistriangles.end(); t++)
+		for (t = m.Thistriangles.begin(); t != m.Thistriangles.end(); t++)
 		{
 			cv::Point p1(shader->vertexShader(t->a()).windowPos.x, shader->vertexShader(t->a()).windowPos.y);
 			cv::Point p2(shader->vertexShader(t->b()).windowPos.x, shader->vertexShader(t->b()).windowPos.y);
@@ -72,8 +48,7 @@ void FrameBuffer::draw(int mode)
 	}
 	else if (mode == 1)
 	{
-		std::vector<Triangle>::iterator t;
-		for (t = Thistriangles.begin(); t != Thistriangles.end(); t++)
+		for (t = m.Thistriangles.begin(); t != m.Thistriangles.end(); t++)
 		{
 			Vout v1 = shader->vertexShader(t->a());
 			Vout v2 = shader->vertexShader(t->b());

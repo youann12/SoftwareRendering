@@ -16,6 +16,14 @@ public:
 	Mesh() = default;
 	~Mesh() = default;
 	void loadData(float data[], int ind[], int numVertices, int numTriangles);
-private:
+
+	bool operator<(const Mesh& m1)const
+	{
+		if (Thistriangles.size() < m1.Thistriangles.size())
+			return true;
+		else
+			return false;
+	}
+
 	std::vector<Triangle> Thistriangles;
 };
