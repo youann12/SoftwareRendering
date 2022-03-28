@@ -1,24 +1,104 @@
 #include "Shader.h"
+#include "sourceData.h"
 
 
-void Shader::setModel(glm::mat4 m)
+void Shader::setModel(float angle)
 {
-	model = m;
+	angle = angle * MY_PI / 180.0f;
+	glm::mat4 rotation = 
+	  { cos(angle), 0, sin(angle), 0,
+		0, 1, 0, 0,
+		-sin(angle), 0, cos(angle), 0,
+		0, 0, 0, 1 };
+
+	glm::mat4 scale =
+	  { 2.5, 0, 0, 0,
+		0, 2.5, 0, 0,
+		0, 0, 2.5, 0,
+		0, 0, 0, 1 };
+
+	glm::mat4 translate =
+	{ 1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1 };
+	
+	model = translate * scale * rotation;
 }
 
-void Shader::setView(int ox, int oy, int width, int height)
+void Shader::setViewPort(int x, int y, int width, int height)
 {
 	glm::mat4 v = glm::mat4(1.0f);
 	v[0][0] = width / 2.0f;
-	v[3][0] = ox + (width / 2.0f);
+	v[3][0] = x + (width / 2.0f);
 	v[1][1] = -height / 2.0f;
-	v[3][1] = oy + (height / 2.0f);
-	view = v;
+	v[3][1] = y + (height / 2.0f);
+	viewport = v;
 }
 
-void Shader::setProjection(glm::mat4 p)
+void Shader::setView(glm::vec3 pos, glm::vec3 front, glm::vec3 right, glm::vec3 up)
 {
-	projection = p;
+	view = glm::mat4(1.0f);
+	view[0][0] = right.x;
+	view[1][0] = right.y;
+	view[2][0] = right.z;
+	view[3][0] = -glm::dot(right, pos);
+	view[0][1] = up.x;
+	view[1][1] = up.y;
+	view[2][1] = up.z;
+	view[3][1] = -glm::dot(up, pos);
+	view[0][2] = -front.x;
+	view[1][2] = -front.y;
+	view[2][2] = -front.z;
+	view[3][2] = glm::dot(front, pos);
+}
+
+
+void Shader::setProjection(float eye_fov, float aspect_ratio, float zNear, float zFar)
+{
+	zFar = -zFar;
+	zNear = -zNear;
+
+	float t = tan(eye_fov / 2 / 180 * MY_PI) * (-zNear);
+	float b = -1 * t;
+	float r = t * aspect_ratio;
+	float l = -1 * r;
+
+	glm::mat4 ortho1 =
+	{ 
+		2 / (r - l), 0, 0, 0,
+		0, 2 / (t - b), 0, 0,
+		0,0,2 / (zNear - zFar),0,
+		0,0,0,1
+	};
+
+	glm::mat4 ortho2 =
+	{
+		1,0,0, 0,
+		0,1,0,0,
+		0,0,1,-1 * (zNear - zFar) / 2,
+		0,0,0,1
+	};
+
+	glm::mat4 ortho = ortho1 * ortho2;
+
+	glm::mat4 transz =
+	{
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, -1, 0,
+		0, 0, 0, 1
+	};
+
+	glm::mat4 persp =
+	{
+		zNear,0,0,0,
+		0,zNear,0,0,
+		0,0,zNear + zFar,-1 * zNear * zFar,
+		0,0,1,0
+	};
+
+	projection = transz * ortho * persp;
 }
 
 Vout Shader::vertexShader(vertex v)
@@ -32,7 +112,9 @@ Vout Shader::vertexShader(vertex v)
 	//vout.normal = v.normal;
 	//vout.Texcoord = v.Texcoord;
 	vout.position = v.position;
-	vout.windowPos = view * v.position;
+
+
+	vout.windowPos = viewport * v.position;
 
 	return vout;
 }

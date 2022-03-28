@@ -5,9 +5,7 @@
 class Scene
 {
 public:
-	int id;
-
-	Scene() = default;
+	Scene(FrameBuffer* frame) :f(frame) {};
 	~Scene() = default;
 
 	void loadMesh(Mesh m, glm::vec3 position);

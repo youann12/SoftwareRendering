@@ -15,14 +15,14 @@ int main()
     FrameBuffer f = FrameBuffer::FrameBuffer(800, 800, &shader);
     Mesh m;
 
-    Scene scene;
-    scene.bindFramebuffer(&f);
+    Scene scene(&f);
 
     m.loadData(vertices, index, 3 * 6, 1);
     
     scene.loadMesh(m, glm::vec3{0, 0, 0});
     
-    shader.setView(0, 0, 800, 800);
+    shader.setViewPort(0, 0, 800, 800);
+    
     while (key != 27)
     {
         float t_front = (double)getTickCount();

@@ -5,11 +5,12 @@
 class Shader
 {
 public:
-	Shader(){ }
+	Shader() {}
 	~Shader() = default;
-	void setModel(glm::mat4 m);
-	void setView(int x, int y, int width, int height);
-	void setProjection(glm::mat4 p);
+	void setModel(float angle);
+	void setViewPort(int x, int y, int width, int height);
+	void setView(glm::vec3 pos, glm::vec3 front, glm::vec3 right, glm::vec3 up);
+	void setProjection(float eye_fov, float aspect_ratio, float zNear, float zFar);
 	Vout vertexShader(vertex v);
 	glm::vec3 FragmentShader(Vout v);
 
@@ -18,5 +19,5 @@ private:
 	glm::mat4 model;
 	glm::mat4 view;
 	glm::mat4 projection;
-	
+	glm::mat4 viewport;
 };
