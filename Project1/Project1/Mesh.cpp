@@ -13,10 +13,10 @@ void Mesh::loadData(float data[], int ind[], int numVertices, int numTriangles)
 	}
 
 	// according to index array and vertices array to construct triangle
-	for (int i = 0; i <= numTriangles; i += 3)
+	for (int i = 0; i < numTriangles; i += 3)
 	{
-		glm::vec4 tVertices[3] = { vertices[i].location, vertices[i + 1].location, vertices[i + 2].location };
-		glm::vec3 tColors[3] = { vertices[i].color, vertices[i + 1].color, vertices[i + 2].color };
+		glm::vec4 tVertices[3]	 = { vertices[ind[i]].location, vertices[ind[i + 1]].location,	vertices[ind[i + 2]].location };
+		glm::vec3 tColors[3]	 = { vertices[ind[i]].color,	vertices[ind[i + 1]].color,		vertices[ind[i + 2]].color };
 		Triangle t = Triangle(tVertices, tColors);
 		Thistriangles.push_back(t);
 	}

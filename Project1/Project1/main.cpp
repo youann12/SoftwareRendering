@@ -6,7 +6,7 @@ using namespace std;
 using namespace cv;
 int frame_count = 0;
 
-int draw_mode = 1; // mode = 0 represent wireframe mode, and 1 represent full rendering
+int draw_mode = 0; // mode = 0 represent wireframe mode, and 1 represent full rendering
 
 int main()
 {
@@ -14,25 +14,34 @@ int main()
     Shader shader = Shader();
     FrameBuffer f = FrameBuffer::FrameBuffer(800, 800, &shader);
     Mesh m;
+    float angle = 0.0f;
 
     Scene scene(&f);
 
-    m.loadData(vertices, index, 3 * 6, 1);
+    m.loadData(boxs, indices, 8 * 6, 12 * 3);
     
     scene.loadMesh(m, glm::vec3{0, 0, 0});
     
     shader.setViewPort(0, 0, 800, 800);
+    shader.setProjection(glm::radians(60.0f), (float)800 / 800, 0.3f, 100);
+    shader.setView(glm::vec3(0, 0, 5), glm::vec3(0, 0, -1), glm::vec3(1, 0, 0), glm::vec3(0, 1, 0));
+
+    
     
     while (key != 27)
     {
         float t_front = (double)getTickCount();
         
-        scene.draw(draw_mode);
+        shader.setModel(glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::radians(angle), glm::vec3{ 0.0f, 0.0f, 1.0f});
         
+        scene.draw(draw_mode);
+        angle += 5.0f;
+
         key = waitKey(1);
         float t_now = ((double)getTickCount() - t_front) / getTickFrequency();
         float fps = 1.0 / t_now;
         std::cout << "Fps: " << fps << '\n';
+        std::cout << "angle: " << angle << '\n';
         if (key == 114)
         {
             draw_mode = 1;

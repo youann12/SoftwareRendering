@@ -31,7 +31,7 @@ void FrameBuffer::delMesh(Mesh m)
 
 void FrameBuffer::draw(int mode, Mesh m)
 {
-	this->clearColor(glm::vec3{ 0.0f, 0.0f, 0.0f });
+	this->clearColor(glm::vec3{ 0.5f, 0.5f, 0.5f });
 	cv::Mat image(800, 800, CV_32FC3, this->frame_buffer().data());
 	std::vector<Triangle>::iterator t;
 	if (mode == 0)
