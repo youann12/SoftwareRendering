@@ -65,50 +65,6 @@ void Shader::setProjection(float eye_fov, float aspect_ratio, float zNear, float
 	result[3][2] = (-2.0f * zNear * zFar) / (zFar - zNear);
 
 	projection = result;
-	//projection = glm::perspective(eye_fov, aspect_ratio, zNear, zFar);
-	//zFar = -zFar;
-	//zNear = -zNear;
-
-	//float t = tan(eye_fov / 2 / 180 * MY_PI) * (-zNear);
-	//float b = -1 * t;
-	//float r = t * aspect_ratio;
-	//float l = -1 * r;
-
-	//glm::mat4 ortho1 =
-	//{ 
-	//	2 / (r - l), 0, 0, 0,
-	//	0, 2 / (t - b), 0, 0,
-	//	0,0,2 / (zNear - zFar),0,
-	//	0,0,0,1
-	//};
-
-	//glm::mat4 ortho2 =
-	//{
-	//	1,0,0, 0,
-	//	0,1,0,0,
-	//	0,0,1,-1 * (zNear - zFar) / 2,
-	//	0,0,0,1
-	//};
-
-	//glm::mat4 ortho = ortho1 * ortho2;
-
-	//glm::mat4 transz =
-	//{
-	//	1, 0, 0, 0,
-	//	0, 1, 0, 0,
-	//	0, 0, 1, 0,
-	//	0, 0, 0, 1
-	//};
-
-	//glm::mat4 persp =
-	//{
-	//	zNear,0,0,0,
-	//	0,zNear,0,0,
-	//	0,0,zNear + zFar,-1 * zNear * zFar,
-	//	0,0,1,0
-	//};
-
-	//projection = transz * ortho * persp;
 }
 
 void PerspectiveDivision(Vout & v) {

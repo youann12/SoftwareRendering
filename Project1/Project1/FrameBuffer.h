@@ -22,6 +22,7 @@ public:
 		width = w;
 		height = h;
 		framebuffer.resize((double)this->width * (double)this->height);
+		depthbuffer.resize((double)this->width * (double)this->height, 1.0f);
 		clearColor(glm::vec3{ 0.0f, 0.0f, 0.0f });
 		shader = s;
 	};
@@ -33,6 +34,8 @@ public:
 	void loadMesh(Mesh m, glm::vec3 position);
 	void delMesh(Mesh m);
 	void draw(int mode, Mesh m);
+	float getDepth(const int& x, const int& y);
+	void writeDepth(const int& x, const int& y, const float& depth);
 
 private:
 	int width;
@@ -41,6 +44,7 @@ private:
 	std::map<Mesh, glm::vec3> ThisMeshes;
 
 	std::vector<glm::vec3> framebuffer;
+	std::vector<float> depthbuffer;
 	Shader *shader;
 
 	void drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3);

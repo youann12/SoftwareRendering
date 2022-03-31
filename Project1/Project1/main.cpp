@@ -6,7 +6,7 @@ using namespace std;
 using namespace cv;
 int frame_count = 0;
 
-int draw_mode = 0; // mode = 0 represent wireframe mode, and 1 represent full rendering
+int draw_mode = 1; // mode = 0 represent wireframe mode, and 1 represent full rendering
 
 int main()
 {
@@ -32,10 +32,10 @@ int main()
     {
         float t_front = (double)getTickCount();
         
-        shader.setModel(glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::radians(angle), glm::vec3{ 0.0f, 0.0f, 1.0f});
+        shader.setModel(glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::radians(angle), glm::vec3{ 0.0f, 0.5f, 0.5f});
         
         scene.draw(draw_mode);
-        angle += 5.0f;
+        angle += 30.0f;
 
         key = waitKey(1);
         float t_now = ((double)getTickCount() - t_front) / getTickFrequency();

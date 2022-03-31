@@ -15,6 +15,7 @@ void FrameBuffer::setPoint(int x, int y, glm::vec3 color)
 void FrameBuffer::clearColor(glm::vec3 color)
 {
 	std::fill(framebuffer.begin(), framebuffer.end(), color);
+	std::fill(depthbuffer.begin(), depthbuffer.end(), 1.0f);
 }
 
 
@@ -59,6 +60,21 @@ void FrameBuffer::draw(int mode, Mesh m)
 	imshow("soft render", image);
 }
 
+float FrameBuffer::getDepth(const int& x, const int& y)
+{
+	if (x < 0 || x >= width || y < 0 || y >= height)
+		return 1.0;
+	return *(depthbuffer.data() + y * width + x);
+}
+
+void FrameBuffer::writeDepth(const int& x, const int& y, const float& depth)
+{
+	if (x < 0 || x >= width || y < 0 || y >= height)
+		return;
+	float* p = depthbuffer.data();
+	*(p + y * width + x) = depth;
+}
+
 void FrameBuffer::drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 {
 	Vout tem[3] = {v1, v2, v3}; // 按照从上到下的顺序排序v1, v2, v3
@@ -88,7 +104,7 @@ void FrameBuffer::drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 		drawUpTriangle(tem[0], tem[1], tem[2]);
 	else
 	{
-		float w = (tem[1].windowPos.y - tem[0].windowPos.y) / (tem[2].windowPos.y - tem[1].windowPos.y);
+		float w = (tem[1].windowPos.y - tem[0].windowPos.y) / (tem[2].windowPos.y - tem[0].windowPos.y);
 		Vout vmid = Vout::lerp(tem[0], tem[2], w);
 		drawUpTriangle(tem[0], tem[1], vmid);
 		drawDownTriangle(tem[1], vmid, tem[2]);
@@ -138,6 +154,12 @@ void FrameBuffer::scanLine(const Vout &v1, const Vout &v2)
 	for (int i = v1.windowPos.x; i <= v2.windowPos.x; i++)
 	{
 		Vout v = Vout::lerp(v1, v2, (i - v1.windowPos.x) / total);
-		setPoint(i, v1.windowPos.y, shader->FragmentShader(v));
+		float depth = getDepth(i, v1.windowPos.y);
+		if (v.windowPos.z <= depth)
+		{
+			setPoint(i, v1.windowPos.y, shader->FragmentShader(v));
+			writeDepth(i, v1.windowPos.y, v.windowPos.z);
+		}
+		
 	}
 }
