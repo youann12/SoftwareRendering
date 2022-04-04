@@ -1,6 +1,7 @@
 //#include "FrameBuffer.h"
 #include "sourceData.h"
 #include "Scene.h"
+#include "Texture.h"
 
 using namespace std;
 using namespace cv;
@@ -26,8 +27,7 @@ int main()
     shader.setProjection(glm::radians(60.0f), (float)800 / 800, 0.3f, 100);
     shader.setView(glm::vec3(0, 0, 5), glm::vec3(0, 0, -1), glm::vec3(1, 0, 0), glm::vec3(0, 1, 0));
 
-    
-    
+
     while (key != 27)
     {
         float t_front = (double)getTickCount();
