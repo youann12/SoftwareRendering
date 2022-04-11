@@ -1,7 +1,7 @@
 //#include "FrameBuffer.h"
 #include "sourceData.h"
 #include "Scene.h"
-#include "Texture.h"
+
 
 using namespace std;
 using namespace cv;
@@ -19,14 +19,23 @@ int main()
 
     Scene scene(&f);
 
-    m.loadData(boxs, indices, 8 * 6, 12 * 3);
+    m.loadData(boxs, indices, 8 * 8, 12 * 3);
     
     scene.loadMesh(m, glm::vec3{0, 0, 0});
     
     shader.setViewPort(0, 0, 800, 800);
     shader.setProjection(glm::radians(60.0f), (float)800 / 800, 0.3f, 100);
     shader.setView(glm::vec3(0, 0, 5), glm::vec3(0, 0, -1), glm::vec3(1, 0, 0), glm::vec3(0, 1, 0));
+    
+    
+    Texture t;
+    t.loadTexture("resource/container.jpg");
 
+    int tex_width, tex_height, nrChannels;
+    unsigned char* d = stbi_load("resource/container.jpg", &tex_width, &tex_height, &nrChannels, 0);
+
+    int shaderInd = shader.addTexture(t);
+    shader.useTexture(shaderInd);
 
     while (key != 27)
     {

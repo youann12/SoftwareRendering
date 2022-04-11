@@ -28,24 +28,26 @@ public:
 	};
 	FrameBuffer() = default;
 	~FrameBuffer() = default;
+
+	void	setPoint(int x, int y, glm::vec3 color);
+	void	clearColor(glm::vec3 color);
+	void	loadMesh(Mesh m, glm::vec3 position);
+	void	delMesh(Mesh m);
+	void	draw(int mode, Mesh m);
+	float	getDepth(const int& x, const int& y);
+	void	writeDepth(const int& x, const int& y, const float& depth);
 	std::vector<glm::vec3>& frame_buffer() { return framebuffer; }
-	void setPoint(int x, int y, glm::vec3 color);
-	void clearColor(glm::vec3 color);
-	void loadMesh(Mesh m, glm::vec3 position);
-	void delMesh(Mesh m);
-	void draw(int mode, Mesh m);
-	float getDepth(const int& x, const int& y);
-	void writeDepth(const int& x, const int& y, const float& depth);
 
 private:
-	int width;
+	int	width;
 	int height;
+	
+	Shader* shader;
+	
+	std::map<Mesh, glm::vec3>	ThisMeshes;
+	std::vector<glm::vec3>		framebuffer;
+	std::vector<float>			depthbuffer;
 
-	std::map<Mesh, glm::vec3> ThisMeshes;
-
-	std::vector<glm::vec3> framebuffer;
-	std::vector<float> depthbuffer;
-	Shader *shader;
 
 	void drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3);
 	void drawUpTriangle(const Vout &v1, const Vout &v2, const Vout &v3);

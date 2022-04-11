@@ -6,7 +6,7 @@ struct vertexData
 	glm::vec4 location;
 	glm::vec3 color;
 	//glm::vec3 normal;
-	//glm::vec3 texcoord;
+	glm::vec2 texcoord;
 };
 
 

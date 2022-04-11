@@ -17,6 +17,7 @@ class Triangle
 public:
 	Triangle(glm::vec4* vertex, glm::vec3* color, glm::vec3 *normal, glm::vec2 *texcoord);
 	Triangle(glm::vec4* vertex, glm::vec3* color);
+	Triangle(glm::vec4* vertex, glm::vec3* color, glm::vec2* texcoord);
 	~Triangle() = default;
 
 	vertex vertices[3];
@@ -25,9 +26,9 @@ public:
 	vertex b() const { return vertices[1]; };
 	vertex c() const { return vertices[2]; };
 
-	void setPos(int i, glm::vec4 vertex);
-	void setColor	 (int i, glm::vec3 color);
-	void setNormal	 (int i, glm::vec3 normal);
-	void setTexCoord (int i, glm::vec2 texcoord);
+	void setPos			(int i, glm::vec4 vertex);
+	void setColor		(int i, glm::vec3 color);
+	void setNormal		(int i, glm::vec3 normal);
+	void setTexCoord	(int i, glm::vec2 texcoord);
 
 };

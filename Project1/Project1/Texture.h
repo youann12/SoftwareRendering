@@ -3,33 +3,28 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <string>
 
 
 
 class Texture
 {
 public:
-	int width;
-	int height;
-	int channels;
-	unsigned char* data;
+	int				width;
+	int				height;
+	int				channels;
+	unsigned char*	data;
 
 	Texture() = default;
-	Texture(const std::string& p)
-	{
-		unsigned char* data = new unsigned char;
-		data = stbi_load(p.c_str(), &width, &height, &channels, 0);
-	};
+	//Texture(const std::string& p)
+	//{
+	//	data = stbi_load(p.c_str(), &width, &height, &channels, 0);
+	//};
 
-	~Texture() 
-	{
-		if (data)
-			delete data;
-	};
+	~Texture() = default;
 
-	void loadTexture(const std::string& p)
-	{
-		data = stbi_load(p.c_str(), &width, &height, &channels, 0);
-	};
+	void		loadTexture(const std::string& p);
+	glm::vec3	sample2D(const glm::vec2& texcoord);
+	glm::vec3	getColor(int x, int y);
 
 };

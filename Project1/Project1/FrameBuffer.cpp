@@ -157,6 +157,10 @@ void FrameBuffer::scanLine(const Vout &v1, const Vout &v2)
 		float depth = getDepth(i, v1.windowPos.y);
 		if (v.windowPos.z <= depth)
 		{
+			//float z = v.z;
+			//v.position /= z;
+			//v.Texcoord /= z;
+			//v.color /= z;
 			setPoint(i, v1.windowPos.y, shader->FragmentShader(v));
 			writeDepth(i, v1.windowPos.y, v.windowPos.z);
 		}

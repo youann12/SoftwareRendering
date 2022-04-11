@@ -77,19 +77,38 @@ Vout Shader::vertexShader(vertex v)
 {
 	Vout vout;
 	glm::mat4x4 mvp = projection * view * model;
-	vout.color = v.color;
-	//vout.normal = v.normal;
-	//vout.Texcoord = v.Texcoord;
-	vout.position = v.position;
 	vout.windowPos = mvp * v.position;
+	//vout.z = 1 / vout.windowPos.w;
 	PerspectiveDivision(vout);
 	vout.windowPos = viewport * vout.windowPos;
+	
+
+	vout.color		= v.color;
+	//vout.normal = v.normal;
+	vout.Texcoord	= v.Texcoord;
+	vout.position	= v.position;
 
 	return vout;
 }
 
 glm::vec3 Shader::FragmentShader(Vout v)
 {
-	glm::vec3 color = v.color;
+	glm::vec3 color;
+	if (texInd != -1)
+ 		color = tex.sample2D(v.Texcoord);
+	else
+		color = v.color;
 	return color;
+}
+
+int Shader::addTexture(Texture t)
+{
+	textures.push_back(t);
+	return textures.size();
+}
+
+void Shader::useTexture(int ind)
+{
+	texInd = ind - 1;
+	tex = textures[texInd];
 }

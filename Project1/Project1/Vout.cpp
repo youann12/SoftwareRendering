@@ -6,8 +6,9 @@ Vout Vout::lerp(Vout v1, Vout v2, float weight)
 	v.color		= Lerp(v1.color, v2.color, weight);
 	//v.normal	= Lerp(v1.normal, v2.normal, weight);
 	v.position	= Lerp(v1.position, v2.position, weight);
-	//v.Texcoord	= Lerp(v1.Texcoord, v2.Texcoord, weight);
+	v.Texcoord	= Lerp(v1.Texcoord, v2.Texcoord, weight);
 	v.windowPos	= Lerp(v1.windowPos, v2.windowPos, weight);
+	//v.z			= Lerp(v1.z, v2.z, weight);
 
 	return v;
 }
