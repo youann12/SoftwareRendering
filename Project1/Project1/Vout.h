@@ -12,7 +12,7 @@ public:
 	//glm::vec3 normal;
 	glm::vec2 Texcoord;
 	glm::vec4 windowPos;
-	//float z;
+	float z;
 
 	Vout()	= default;
 	~Vout() = default;

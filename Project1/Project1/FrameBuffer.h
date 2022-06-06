@@ -14,7 +14,6 @@
 //};
 
 
-
 class FrameBuffer
 {
 public:
@@ -31,8 +30,6 @@ public:
 
 	void	setPoint(int x, int y, glm::vec3 color);
 	void	clearColor(glm::vec3 color);
-	void	loadMesh(Mesh m, glm::vec3 position);
-	void	delMesh(Mesh m);
 	void	draw(int mode, Mesh m);
 	float	getDepth(const int& x, const int& y);
 	void	writeDepth(const int& x, const int& y, const float& depth);
@@ -44,7 +41,6 @@ private:
 	
 	Shader* shader;
 	
-	std::map<Mesh, glm::vec3>	ThisMeshes;
 	std::vector<glm::vec3>		framebuffer;
 	std::vector<float>			depthbuffer;
 

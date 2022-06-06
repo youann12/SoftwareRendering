@@ -1,19 +1,23 @@
 //#include "FrameBuffer.h"
 #include "sourceData.h"
 #include "Scene.h"
-
+#include "Camera.h"
 
 using namespace std;
 using namespace cv;
-int frame_count = 0;
 
+int frame_count = 0;
 int draw_mode = 1; // mode = 0 represent wireframe mode, and 1 represent full rendering
+
+void keyboardEvent(int key);
+
 
 int main()
 {
     int key = 0;
     Shader shader = Shader();
     FrameBuffer f = FrameBuffer::FrameBuffer(800, 800, &shader);
+    Camera camera(glm::vec3(0.0f, 0.0f, 5.0f));
     Mesh m;
     float angle = 0.0f;
 
@@ -36,29 +40,39 @@ int main()
 
     int shaderInd = shader.addTexture(t);
     shader.useTexture(shaderInd);
-
+    glm::mat4 sCamView = camera.GetViewMatrix();
+    //shader.setCameraView(sCamView);
+    std::cout << "1 " << 1 << '\n';
     while (key != 27)
     {
         float t_front = (double)getTickCount();
         
+
+
+
         shader.setModel(glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::radians(angle), glm::vec3{ 0.0f, 0.5f, 0.5f});
         
         scene.draw(draw_mode);
-        angle += 30.0f;
+        angle += 50.0f;
 
         key = waitKey(1);
         float t_now = ((double)getTickCount() - t_front) / getTickFrequency();
         float fps = 1.0 / t_now;
         std::cout << "Fps: " << fps << '\n';
-        std::cout << "angle: " << angle << '\n';
-        if (key == 114)
-        {
-            draw_mode = 1;
-        }
-        else if (key == 102)
-        {
-            draw_mode = 0;
-        }
+        //std::cout << "angle: " << angle << '\n';
+        keyboardEvent(key);
     }
     return 0;
 }  
+
+void keyboardEvent( int key )
+{
+    if (key == 114)
+    {
+        draw_mode = 1;
+    }
+    else if (key == 102)
+    {
+        draw_mode = 0;
+    }
+}

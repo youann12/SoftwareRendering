@@ -15,6 +15,7 @@ public:
 	void		setModel(glm::vec3 pos, glm::vec3 scale, float angle, glm::vec3 axis);
 	void		setViewPort(int x, int y, int width, int height);
 	void		setView(glm::vec3 pos, glm::vec3 front, glm::vec3 right, glm::vec3 up);
+	void		setCameraView(glm::mat4 camView);
 	void		setProjection(float eye_fov, float aspect_ratio, float zNear, float zFar);
 	Vout		vertexShader(vertex v);
 	glm::vec3	FragmentShader(Vout v);
@@ -31,3 +32,4 @@ private:
 	std::vector<Texture>	textures;
 	Texture					tex;
 };
+

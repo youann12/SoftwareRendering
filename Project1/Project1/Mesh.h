@@ -27,3 +27,7 @@ public:
 
 	std::vector<Triangle> Thistriangles;
 };
+
+
+
+

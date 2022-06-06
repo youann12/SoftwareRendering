@@ -53,6 +53,11 @@ void Shader::setView(glm::vec3 pos, glm::vec3 front, glm::vec3 right, glm::vec3 
 	view[3][2] = glm::dot(front, pos);
 }
 
+void Shader::setCameraView(glm::mat4 camView)
+{
+	view = camView;
+}
+
 
 void Shader::setProjection(float eye_fov, float aspect_ratio, float zNear, float zFar)
 {
@@ -78,15 +83,19 @@ Vout Shader::vertexShader(vertex v)
 	Vout vout;
 	glm::mat4x4 mvp = projection * view * model;
 	vout.windowPos = mvp * v.position;
-	//vout.z = 1 / vout.windowPos.w;
+	
+	vout.z = 1 / vout.windowPos.w;
+	vout.color = v.color * vout.z;
+	//vout.normal = v.normal;
+	vout.Texcoord = v.Texcoord * vout.z;
+	vout.position = v.position * vout.z;
+
+
 	PerspectiveDivision(vout);
 	vout.windowPos = viewport * vout.windowPos;
 	
 
-	vout.color		= v.color;
-	//vout.normal = v.normal;
-	vout.Texcoord	= v.Texcoord;
-	vout.position	= v.position;
+
 
 	return vout;
 }

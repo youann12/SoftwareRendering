@@ -19,17 +19,6 @@ void FrameBuffer::clearColor(glm::vec3 color)
 }
 
 
-
-void FrameBuffer::loadMesh(Mesh m, glm::vec3 position)
-{
-	ThisMeshes.insert(std::pair<Mesh, glm::vec3> (m, position));
-}
-
-void FrameBuffer::delMesh(Mesh m)
-{
-	ThisMeshes.erase(m);
-}
-
 void FrameBuffer::draw(int mode, Mesh m)
 {
 	this->clearColor(glm::vec3{ 0.5f, 0.5f, 0.5f });
@@ -157,10 +146,10 @@ void FrameBuffer::scanLine(const Vout &v1, const Vout &v2)
 		float depth = getDepth(i, v1.windowPos.y);
 		if (v.windowPos.z <= depth)
 		{
-			//float z = v.z;
-			//v.position /= z;
-			//v.Texcoord /= z;
-			//v.color /= z;
+			float z = v.z;
+			v.position /= z;
+			v.Texcoord /= z;
+			v.color /= z;
 			setPoint(i, v1.windowPos.y, shader->FragmentShader(v));
 			writeDepth(i, v1.windowPos.y, v.windowPos.z);
 		}
