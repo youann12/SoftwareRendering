@@ -87,6 +87,13 @@ void FrameBuffer::drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 		tem[1] = temp;
 	}
 
+	if (std::min(tem[0].windowPos.x, std::min(tem[1].windowPos.x, tem[2].windowPos.x)) > 800  ||
+		std::min(tem[0].windowPos.y, std::min(tem[1].windowPos.y, tem[2].windowPos.y)) > 800 ||
+		std::max(tem[0].windowPos.x, std::max(tem[1].windowPos.x, tem[2].windowPos.x)) < 0 ||
+		std::max(tem[0].windowPos.y, std::max(tem[1].windowPos.y, tem[2].windowPos.y)) < 0
+		)
+		return ;
+
 	if (tem[0].windowPos.y == tem[1].windowPos.y)
 		drawDownTriangle(tem[0], tem[1], tem[2]);
 	else if (tem[1].windowPos.y == tem[2].windowPos.y)

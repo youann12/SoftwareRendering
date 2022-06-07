@@ -1,8 +1,8 @@
 #pragma once
 #include "Vout.h"
 
-const float PITCH = -90.0f;
-const float YAW = 0.0f;
+const float PITCH = 0.0f;
+const float YAW = -90.0f;
 const float SPEED = 3.5f;
 const float SENSITIVITY = 0.1f;
 
