@@ -1,7 +1,7 @@
 #include "FrameBuffer.h"
 #include <iostream>
 
-
+bool faceCulling(const glm::vec4& v1, const glm::vec4& v2, const glm::vec4& v3);
 
 void FrameBuffer::setPoint(int x, int y, glm::vec3 color)
 {
@@ -68,6 +68,8 @@ void FrameBuffer::drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 {
 	Vout tem[3] = {v1, v2, v3}; // 按照从上到下的顺序排序v1, v2, v3
 	Vout temp;
+	
+
 	if (tem[0].windowPos.y > tem[1].windowPos.y)
 	{
 		temp = tem[0];
@@ -85,6 +87,9 @@ void FrameBuffer::drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 		temp = tem[0];
 		tem[0] = tem[1];
 		tem[1] = temp;
+	}
+	if (!faceCulling(v1.windowPos, v2.windowPos, v3.windowPos)) {
+		return;
 	}
 
 	if (std::min(tem[0].windowPos.x, std::min(tem[1].windowPos.x, tem[2].windowPos.x)) > 800  ||
@@ -162,4 +167,15 @@ void FrameBuffer::scanLine(const Vout &v1, const Vout &v2)
 		}
 		
 	}
+}
+
+
+//
+bool faceCulling(const glm::vec4 &v1, const glm::vec4& v2, const glm::vec4& v3)
+{
+	glm::vec3 tem1 = glm::vec3(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z);
+	glm::vec3 tem2 = glm::vec3(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z);
+	glm::vec3 normal = glm::normalize(glm::cross(tem1, tem2));
+	glm::vec3 view = glm::vec3(0, 0, 1);
+	return glm::dot(normal, view) >= 0;
 }

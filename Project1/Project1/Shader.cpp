@@ -36,21 +36,21 @@ void Shader::setViewPort(int x, int y, int width, int height)
 
 void Shader::setView(glm::vec3 pos, glm::vec3 front, glm::vec3 right, glm::vec3 up)
 {
-	//view = glm::lookAt(glm::vec3{ 0,0,10 }, glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f });
+	view = glm::lookAt(glm::vec3{ 0,0,5 }, glm::vec3{ 0.0f, 0.0f, -1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f });
 	
-	view = glm::mat4(1.0f);
-	view[0][0] = right.x;
-	view[1][0] = right.y;
-	view[2][0] = right.z;
-	view[3][0] = -glm::dot(right, pos);
-	view[0][1] = up.x;
-	view[1][1] = up.y;
-	view[2][1] = up.z;
-	view[3][1] = -glm::dot(up, pos);
-	view[0][2] = -front.x;
-	view[1][2] = -front.y;
-	view[2][2] = -front.z;
-	view[3][2] = glm::dot(front, pos);
+	//view = glm::mat4(1.0f);
+	//view[0][0] = right.x;
+	//view[1][0] = right.y;
+	//view[2][0] = right.z;
+	//view[3][0] = -glm::dot(right, pos);
+	//view[0][1] = up.x;
+	//view[1][1] = up.y;
+	//view[2][1] = up.z;
+	//view[3][1] = -glm::dot(up, pos);
+	//view[0][2] = -front.x;
+	//view[1][2] = -front.y;
+	//view[2][2] = -front.z;
+	//view[3][2] = glm::dot(front, pos);
 }
 
 void Shader::setCameraView(glm::mat4 camView)
@@ -94,9 +94,6 @@ Vout Shader::vertexShader(vertex v)
 	PerspectiveDivision(vout);
 	vout.windowPos = viewport * vout.windowPos;
 	
-
-
-
 	return vout;
 }
 

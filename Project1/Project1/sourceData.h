@@ -1,5 +1,11 @@
 #pragma once
-
+const int CV_EVENT_MOUSEMOVE = 0;
+const int Key_R = 114;
+const int Key_F = 102;
+const int Key_W = 119;
+const int Key_A = 97;
+const int Key_S = 115;
+const int Key_D = 100;
 
 float vertices[] = {
     // Î»ÖÃ              // ÑÕÉ«

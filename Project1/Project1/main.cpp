@@ -3,14 +3,18 @@
 #include "Scene.h"
 #include "Camera.h"
 
+
 using namespace std;
 using namespace cv;
 
 int frame_count = 0;
 int draw_mode = 1; // mode = 0 represent wireframe mode, and 1 represent full rendering
 Camera camera(glm::vec3(0.0f, 0.0f, 5.0f)); 
-void keyboardEvent(int key);
 
+void keyboardEvent(int key);
+void OnMouse(int event, int x, int y, int flags, void* ustc);
+
+float lastX = 400, lastY = 400;
 
 int main()
 {
@@ -41,7 +45,6 @@ int main()
     int shaderInd = shader.addTexture(t);
     shader.useTexture(shaderInd);
 
-    std::cout << "1 " << 1 << '\n';
     while (key != 27)
     {
         float t_front = (double)getTickCount();
@@ -55,11 +58,12 @@ int main()
         angle += 50.0f;
 
         key = waitKey(1);
+        setMouseCallback("soft render", OnMouse);
         float t_now = ((double)getTickCount() - t_front) / getTickFrequency();
         float fps = 1.0 / t_now;
-        //std::cout << "Fps: " << fps << '\n';
+        std::cout << "Fps: " << fps << '\n';
         //std::cout << "angle: " << angle << '\n';
-        std::cout << "key: " << key << '\n';
+        //std::cout << "key: " << key << '\n';
         keyboardEvent(key);
     }
     return 0;
@@ -67,16 +71,33 @@ int main()
 
 void keyboardEvent( int key )
 {
-    if (key == 114)
+
+    if (key == Key_R)
         draw_mode = 1;
-    if (key == 102)
+    if (key == Key_F)
         draw_mode = 0;
-    if (key == 119)
+    if (key == Key_W)
         camera.ProcessKeyboard(W, 0.016);
-    if (key == 97)
+    if (key == Key_A)
         camera.ProcessKeyboard(A, 0.016);
-    if (key == 115)
+    if (key == Key_S)
         camera.ProcessKeyboard(S, 0.016);
-    if (key == 100)
+    if (key == Key_D)
         camera.ProcessKeyboard(D, 0.016);
+
 }
+
+void OnMouse(int event, int x, int y, int flags, void* ustc)
+{
+
+    if (event == CV_EVENT_MOUSEMOVE)
+    {
+        float xoffset = x - lastX;
+        float yoffset = lastY - y;
+        lastX = x;
+        lastY = y;
+        camera.MoveMouse(xoffset, yoffset);
+    } 
+
+}
+

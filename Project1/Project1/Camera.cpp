@@ -2,20 +2,7 @@
 
 glm::mat4 Camera::GetViewMatrix()
 {
-	glm::mat4 view = glm::mat4(1.0f);
-	view[0][0] = mCameraRight.x;
-	view[1][0] = mCameraRight.y;
-	view[2][0] = mCameraRight.z;
-	view[3][0] = -glm::dot(mCameraRight, mCameraPos);
-	view[0][1] = mCameraUp.x;
-	view[1][1] = mCameraUp.y;
-	view[2][1] = mCameraUp.z;
-	view[3][1] = -glm::dot(mCameraUp, mCameraPos);
-	view[0][2] = -mCameraFront.x;
-	view[1][2] = -mCameraFront.y;
-	view[2][2] = -mCameraFront.z;
-	view[3][2] = glm::dot(mCameraFront, mCameraPos);
-	return view;
+	return glm::lookAt(mCameraPos, mCameraPos + mCameraFront, mCameraUp);
 }
 
 void Camera::ProcessKeyboard(Movement direction, float deltaTime)
