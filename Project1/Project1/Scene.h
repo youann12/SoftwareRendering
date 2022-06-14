@@ -1,6 +1,8 @@
+#ifndef SCENE_H
+#define SCENE_H
+
 #pragma once
 #include "FrameBuffer.h"
-
 
 class Scene
 {
@@ -19,3 +21,4 @@ private:
 	FrameBuffer* f;
 	
 };
+#endif // !SCENE_H

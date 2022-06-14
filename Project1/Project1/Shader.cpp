@@ -2,6 +2,7 @@
 #include <iostream>
 #define MY_PI 3.1415926535
 
+glm::vec3 reflect(glm::vec3 lightDir, glm::vec3 norm);
 
 void Shader::setModel(glm::vec3 pos, glm::vec3 scale, float angle, glm::vec3 axis)
 {
@@ -82,18 +83,25 @@ Vout Shader::vertexShader(vertex v)
 {
 	Vout vout;
 	glm::mat4x4 mvp = projection * view * model;
+	glm::mat4x4 normalTrans = glm::inverse(glm::transpose(model * view));
+
 	vout.windowPos = mvp * v.position;
-	
+
+	glm::vec4 transNormal = glm::vec4(v.normal, 0.0f);
+	transNormal = normalize(normalTrans * transNormal);
+
 	vout.z = 1 / vout.windowPos.w;
-	vout.color = v.color * vout.z;
-	//vout.normal = v.normal;
+	//vout.color = v.color * vout.z;
+	vout.normal = glm::vec3(transNormal) * vout.z;
 	vout.Texcoord = v.Texcoord * vout.z;
 	vout.position = v.position * vout.z;
 
 
 	PerspectiveDivision(vout);
 	vout.windowPos = viewport * vout.windowPos;
-	
+	//std::cout << "normal before " << v.normal.x << " " << v.normal.y << " " << v.normal.z << " " << std::endl;
+	//std::cout << "normal final " << vout.normal.x << " " << vout.normal.y << " " << vout.normal.z << " " << std::endl;
+
 	return vout;
 }
 
@@ -101,9 +109,33 @@ glm::vec3 Shader::FragmentShader(Vout v)
 {
 	glm::vec3 color;
 	if (texInd != -1)
- 		color = tex.sample2D(v.Texcoord);
+	{
+		color = tex.sample2D(v.Texcoord);
+
+		glm::vec3 ambient = light.color * light.intensity;
+		
+		glm::vec3 norm = normalize(v.normal);
+		glm::vec3 dir = normalize(light.direction);
+		float diff = glm::max(dot(norm, dir), 0.0f);
+		glm::vec3 diffuse = diff * light.color;
+
+		float specularStrength = 1;
+		glm::vec3 camDir = normalize(camPos - glm::vec3(v.position.x, v.position.y, v.position.z));
+		glm::vec3 lightDir = normalize(light.pos - glm::vec3(v.position.x, v.position.y, v.position.z));
+		glm::vec3 reflectDir = normalize(reflect(-lightDir, norm));
+ 		float spec = pow(glm::max(glm::dot(camDir, reflectDir), 0.0f), 64);
+		glm::vec3 specular = specularStrength * spec * light.specular;
+		
+		//if (spec > 0.1)
+		//{
+		//	std::cout << "sssss£º " << spec << std::endl;
+		//}
+
+		color *= (ambient + diffuse + specular);
+
+	}
 	else
-		color = v.color;
+		color = glm::vec3(0.0f, 0.0f, 0.0f);
 	return color;
 }
 
@@ -117,4 +149,26 @@ void Shader::useTexture(int ind)
 {
 	texInd = ind - 1;
 	tex = textures[texInd];
+}
+
+int Shader::addLight(Light l)
+{
+	lights.push_back(l);
+	return lights.size();
+}
+
+void Shader::useLight(int ind)
+{
+	lightInd = ind - 1;
+	light = lights[lightInd];
+}
+
+void Shader::setCamPos(glm::vec3 pos)
+{
+	camPos = pos;
+}
+
+glm::vec3 reflect(glm::vec3 lightDir, glm::vec3 norm)
+{
+	return lightDir - (2.0f * norm * glm::dot(lightDir, norm));
 }

@@ -1,3 +1,7 @@
+#ifndef FRAMEBUFFER_H
+#define FRAMEBUFFER_H
+
+
 #include <opencv2/opencv.hpp>
 #include "Triangle.h"
 #include <vector>
@@ -50,3 +54,4 @@ private:
 	void drawDownTriangle(const Vout &v1, const Vout &v2, const Vout &v3);
 	void scanLine(const Vout &v1, const Vout &v2);
 };
+#endif // !FRAMEBUFFER_H

@@ -1,3 +1,6 @@
+#ifndef TRIANGLE_H
+#define TRIANGLE_H
+
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -32,3 +35,4 @@ public:
 	void setTexCoord	(int i, glm::vec2 texcoord);
 
 };
+#endif // !TRIANGLE_H

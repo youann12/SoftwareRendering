@@ -1,3 +1,6 @@
+#ifndef VOUT_H
+#define VOUT_H
+
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -8,8 +11,8 @@ class Vout
 public:
 
 	glm::vec4 position;
-	glm::vec3 color;
-	//glm::vec3 normal;
+	//glm::vec3 color;
+	glm::vec3 normal;
 	glm::vec2 Texcoord;
 	glm::vec4 windowPos;
 	float z;
@@ -34,3 +37,4 @@ private:
 		return (1.0f - weight) * v1 + weight * v2;
 	}
 };
+#endif // !VOUT_H

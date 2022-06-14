@@ -20,12 +20,12 @@ Triangle::Triangle(glm::vec4* vertex, glm::vec3* color)
 	}
 }
 
-Triangle::Triangle(glm::vec4* vertex, glm::vec3* color, glm::vec2* texcoord)
+Triangle::Triangle(glm::vec4* vertex, glm::vec3* normal, glm::vec2* texcoord)
 {
 	for (int i = 0; i < 3; i++)
 	{
 		this->setPos(i, vertex[i]);
-		this->setColor(i, color[i]);
+		this->setNormal(i, normal[i]);
 		this->setTexCoord(i, texcoord[i]);
 	}
 }

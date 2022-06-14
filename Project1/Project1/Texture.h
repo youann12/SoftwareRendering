@@ -1,3 +1,7 @@
+#ifndef TEXTURE_H
+#define TEXTURE_H
+
+
 #pragma once
 #include "stb_image.h"
 #include <glm/glm.hpp>
@@ -26,5 +30,5 @@ public:
 	void		loadTexture(const std::string& p);
 	glm::vec3	sample2D(const glm::vec2& texcoord);
 	glm::vec3	getColor(int x, int y);
-
 };
+#endif // !TEXTURE_H

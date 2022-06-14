@@ -1,8 +1,13 @@
+#ifndef SHADER_H
+#define SHADER_H
+
+
 #pragma once
 #include "Triangle.h"
 #include "Vout.h"
 #include "Texture.h"
 #include <vector>
+#include "Light.h"
 
 class Shader
 {
@@ -21,15 +26,22 @@ public:
 	glm::vec3	FragmentShader(Vout v);
 	int			addTexture(Texture t);
 	void		useTexture(int ind);
+	int			addLight(Light l);
+	void		useLight(int ind);
+	void		setCamPos(glm::vec3 pos);
 
 
 private:
 	int						texInd;
+	int						lightInd;
 	glm::mat4				model;
 	glm::mat4				view;
 	glm::mat4				projection;
 	glm::mat4				viewport;
 	std::vector<Texture>	textures;
 	Texture					tex;
+	std::vector<Light>		lights;
+	Light					light;
+	glm::vec3				camPos;
 };
-
+#endif // !SHADER_H

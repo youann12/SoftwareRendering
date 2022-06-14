@@ -2,6 +2,7 @@
 #include "sourceData.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "Light.h"
 
 
 using namespace std;
@@ -10,6 +11,7 @@ using namespace cv;
 int frame_count = 0;
 int draw_mode = 1; // mode = 0 represent wireframe mode, and 1 represent full rendering
 Camera camera(glm::vec3(0.0f, 0.0f, 5.0f)); 
+Light light;
 
 void keyboardEvent(int key);
 void OnMouse(int event, int x, int y, int flags, void* ustc);
@@ -27,7 +29,7 @@ int main()
 
     Scene scene(&f);
 
-    m.loadData(boxs, indices, 8 * 8, 12 * 3);
+    m.loadData(lightbox, lightindices, 8 * 36, 12 * 3);
     
     scene.loadMesh(m, glm::vec3{0, 0, 0});
     
@@ -45,6 +47,11 @@ int main()
     int shaderInd = shader.addTexture(t);
     shader.useTexture(shaderInd);
 
+    int lightInd = shader.addLight(light);
+    shader.useLight(lightInd);
+
+    shader.setCamPos(camera.mCameraPos);
+
     while (key != 27)
     {
         float t_front = (double)getTickCount();
@@ -55,13 +62,13 @@ int main()
         shader.setModel(glm::vec3{ 0.0f, 0.0f, 0.0f }, glm::vec3{ 1.0f, 1.0f, 1.0f }, glm::radians(angle), glm::vec3{ 0.0f, 0.5f, 0.5f});
         
         scene.draw(draw_mode);
-        angle += 50.0f;
+        angle += 20.0f;
 
         key = waitKey(1);
         setMouseCallback("soft render", OnMouse);
         float t_now = ((double)getTickCount() - t_front) / getTickFrequency();
         float fps = 1.0 / t_now;
-        std::cout << "Fps: " << fps << '\n';
+        //std::cout << "Fps: " << fps << '\n';
         //std::cout << "angle: " << angle << '\n';
         //std::cout << "key: " << key << '\n';
         keyboardEvent(key);

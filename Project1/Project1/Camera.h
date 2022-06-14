@@ -1,4 +1,8 @@
 #pragma once
+#ifndef CAMERA_H
+#define CAMERA_H
+
+
 #include "Vout.h"
 
 const float PITCH = 0.0f;
@@ -55,3 +59,5 @@ private:
 	//更新摄像机坐标
 	void updateCameraVectors();
 };
+
+#endif // !CAMERA_H

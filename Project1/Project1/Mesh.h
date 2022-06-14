@@ -1,11 +1,15 @@
+#ifndef MESH_H
+#define MESH_H
+
+
 #pragma once
 #include "Triangle.h"
 #include <vector>
 struct vertexData
 {
 	glm::vec4 location;
-	glm::vec3 color;
-	//glm::vec3 normal;
+	//glm::vec3 color;
+	glm::vec3 normal;
 	glm::vec2 texcoord;
 };
 
@@ -28,6 +32,4 @@ public:
 	std::vector<Triangle> Thistriangles;
 };
 
-
-
-
+#endif // !MESH_H

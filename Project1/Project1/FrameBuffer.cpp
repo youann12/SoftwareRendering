@@ -1,7 +1,10 @@
 #include "FrameBuffer.h"
+#include "Light.h"
 #include <iostream>
 
+
 bool faceCulling(const glm::vec4& v1, const glm::vec4& v2, const glm::vec4& v3);
+bool ScreenCulling(const Vout& v1, const Vout& v2, const Vout& v3);
 
 void FrameBuffer::setPoint(int x, int y, glm::vec3 color)
 {
@@ -46,6 +49,7 @@ void FrameBuffer::draw(int mode, Mesh m)
 			drawTriangle(v1, v2, v3);
 		}
 	}
+	//std::cout << " " << std::endl;
 	imshow("soft render", image);
 }
 
@@ -69,6 +73,9 @@ void FrameBuffer::drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 	Vout tem[3] = {v1, v2, v3}; // 按照从上到下的顺序排序v1, v2, v3
 	Vout temp;
 	
+	if (!faceCulling(v1.windowPos, v2.windowPos, v3.windowPos)) {
+		return;
+	}
 
 	if (tem[0].windowPos.y > tem[1].windowPos.y)
 	{
@@ -88,17 +95,14 @@ void FrameBuffer::drawTriangle(const Vout &v1, const Vout &v2, const Vout &v3)
 		tem[0] = tem[1];
 		tem[1] = temp;
 	}
-	if (!faceCulling(v1.windowPos, v2.windowPos, v3.windowPos)) {
+
+
+	if (ScreenCulling(tem[0], tem[1], tem[2]))
+	{
+		//std::cout << "culling" << std::endl;
 		return;
 	}
-
-	if (std::min(tem[0].windowPos.x, std::min(tem[1].windowPos.x, tem[2].windowPos.x)) > 800  ||
-		std::min(tem[0].windowPos.y, std::min(tem[1].windowPos.y, tem[2].windowPos.y)) > 800 ||
-		std::max(tem[0].windowPos.x, std::max(tem[1].windowPos.x, tem[2].windowPos.x)) < 0 ||
-		std::max(tem[0].windowPos.y, std::max(tem[1].windowPos.y, tem[2].windowPos.y)) < 0
-		)
-		return ;
-
+		//std::cout << "draw" << std::endl;
 	if (tem[0].windowPos.y == tem[1].windowPos.y)
 		drawDownTriangle(tem[0], tem[1], tem[2]);
 	else if (tem[1].windowPos.y == tem[2].windowPos.y)
@@ -161,7 +165,7 @@ void FrameBuffer::scanLine(const Vout &v1, const Vout &v2)
 			float z = v.z;
 			v.position /= z;
 			v.Texcoord /= z;
-			v.color /= z;
+			v.normal /= z;
 			setPoint(i, v1.windowPos.y, shader->FragmentShader(v));
 			writeDepth(i, v1.windowPos.y, v.windowPos.z);
 		}
@@ -170,12 +174,24 @@ void FrameBuffer::scanLine(const Vout &v1, const Vout &v2)
 }
 
 
-//
+//背面剔除
 bool faceCulling(const glm::vec4 &v1, const glm::vec4& v2, const glm::vec4& v3)
 {
 	glm::vec3 tem1 = glm::vec3(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z);
 	glm::vec3 tem2 = glm::vec3(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z);
 	glm::vec3 normal = glm::normalize(glm::cross(tem1, tem2));
 	glm::vec3 view = glm::vec3(0, 0, 1);
-	return glm::dot(normal, view) >= 0;
+	return glm::dot(normal, view) <= 0;
 }
+
+
+//视口剔除 三个点都在视口外直接剔除
+
+bool ScreenCulling(const Vout& v1, const Vout& v2, const Vout& v3)
+{
+	return std::min(v1.windowPos.x, std::min(v2.windowPos.x, v3.windowPos.x)) > 800 ||
+		std::min(v1.windowPos.y, std::min(v2.windowPos.y, v3.windowPos.y)) > 800 ||
+		std::max(v1.windowPos.x, std::max(v2.windowPos.x, v3.windowPos.x)) < 0 ||
+		std::max(v1.windowPos.y, std::max(v2.windowPos.y, v3.windowPos.y)) < 0;
+}
+
